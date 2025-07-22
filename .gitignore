@@ -1,4 +1,8 @@
 *.ipynb
 *.pyc
 *.csv
+*.npz
+*.txt
+*.png
+old
 __pycache__/
