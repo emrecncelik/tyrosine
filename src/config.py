@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -6,8 +7,8 @@ class ModelConfig:
     name: str
     netset: str
     modality: list[str]
-    extraction_layers: dict[str, str]
-    save_dir: str = None
+    extraction_layers: dict[str, list[str]]
+    save_dir: Optional[str] = None
 
     def __post_init__(self):
         if self.save_dir is None:
