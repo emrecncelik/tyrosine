@@ -44,8 +44,8 @@ EXPERIMENT_MODALITY = {
             },
         ),
     ],
-    "feature_directory": "features",
-    "rdm_directory": "rdms",
+    "feature_directory": "features_modality",
+    "rdm_directory": "rdms_modality",
 }
 
 EXPERIMENT_TASK = {}
