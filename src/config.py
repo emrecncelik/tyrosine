@@ -60,7 +60,7 @@ FMRI_RDMS = {
     "faces": {
         "FFA-1": "floc-faces/subject_{}_merged_FFA-1_both.npz",
         "FFA-2": "floc-faces/subject_{}_merged_FFA-2_both.npz",
-        "OFA": "floc-faces/subject_{}_merged_FOA_both.npz",
+        "OFA": "floc-faces/subject_{}_merged_OFA_both.npz",
     },
     "places": {
         "OPA": "floc-places/subject_{}_merged_OPA_both.npz",
