@@ -46,11 +46,15 @@ if __name__ == "__main__":
                 data_path = text_paths
             else:
                 raise ValueError(f"Unsupported modality: {modality}")
-            
+
             device = (
-                "cuda" if torch.cuda.is_available() and "bert" not in model.name else "cpu"
+                "cuda"
+                if torch.cuda.is_available() and "bert" not in model.name
+                else "cpu"
             )
-            feature_extractor = FeatureExtractor(model=model.name, netset=model.netset, device=device)
+            feature_extractor = FeatureExtractor(
+                model=model.name, netset=model.netset, device=device
+            )
             feature_save_dir = os.path.join(
                 config["feature_directory"],
                 model.save_dir_for_modality(modality),
@@ -107,5 +111,7 @@ if __name__ == "__main__":
 
             logger.info(f"RDMs saved in: {rdm_save_dir}")
             del rdm_creator
-        
-        logger.info(f"Finished extracting features and creating RDMs for model: {model.name}\n\n")
+
+        logger.info(
+            f"Finished extracting features and creating RDMs for model: {model.name}\n\n"
+        )
