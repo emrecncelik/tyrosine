@@ -49,3 +49,22 @@ EXPERIMENT_MODALITY = {
 }
 
 EXPERIMENT_TASK = {}
+
+
+FMRI_RDMS = {
+    "bodies": {
+        "FBA-1": "floc-bodies/subject_{}_merged_FBA-1_both.npz",
+        "FBA-2": "floc-bodies/subject_{}_merged_FBA-2_both.npz",
+        "EBA": "floc-bodies/subject_{}_merged_EBA_both.npz",
+    },
+    "faces": {
+        "FFA-1": "floc-faces/subject_{}_merged_FFA-1_both.npz",
+        "FFA-2": "floc-faces/subject_{}_merged_FFA-2_both.npz",
+        "FOA": "floc-faces/subject_{}_merged_FOA_both.npz",
+    },
+    "places": {
+        "OPA": "floc-places/subject_{}_merged_OPA_both.npz",
+        "PPA": "floc-places/subject_{}_merged_PPA_both.npz",
+        "RSC": "floc-places/subject_{}_merged_RSC_both.npz",
+    },
+}
