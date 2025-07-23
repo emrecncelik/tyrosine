@@ -1,4 +1,6 @@
 import glob
+import math
+import torch
 import numpy as np
 from tqdm import tqdm
 
@@ -65,3 +67,59 @@ def process_and_update_features(feature_dir: str, op: str = "mean") -> None:
             processed_features = feature_postprocess(features, op=op)
             processed[k] = processed_features
         np.savez(file, **processed)  # TODO: dont update all at once to save memory
+
+
+def filepath_to_nsd_id(filename: str) -> int:
+    return int(filename.split("-")[-1].split(".")[0])
+
+
+def filepath_to_fmri_index(filename: str) -> int:
+    return int(filename.split("/")[-1].split("_")[0].split("-")[-1])
+
+
+def get_fmri_indices(paths: list[str]) -> list[int]:
+    return [filepath_to_fmri_index(p) for p in paths]
+
+
+def filter_filepaths(paths: list[str], ids: list[int]) -> list[str]:
+    return [p for p in paths if filepath_to_nsd_id(p) in ids]
+
+
+def filter_common(paths: str, stimuli1000path: str = "./stimuli1000.csv"):
+    ids = pd.read_csv(stimuli1000path)["nsd_id"].tolist()
+    return filter_filepaths(paths=paths, ids=ids)
+
+
+def to_distance_matrix(x: torch.Tensor) -> torch.Tensor:
+    """
+    # Taken from Net2Brain to convert RDMs to rsatoolbox format.
+    Converts a condensed distance vector to a symmetric distance matrix.
+
+    Parameters
+    ----------
+    x : torch.Tensor
+        A condensed distance vector of shape (n * (n - 1) / 2, ) or (b, n * (n - 1) / 2).
+
+    Returns
+    -------
+    torch.Tensor
+        A symmetric distance matrix of shape (n, n) or (b, n, n).
+    """
+    shape = x.shape
+    d = math.ceil(math.sqrt(shape[-1] * 2))
+
+    if d * (d - 1) != shape[-1] * 2:
+        raise ValueError("The input must be a condensed distance matrix.")
+
+    i = torch.triu_indices(d, d, offset=1, device=x.device)
+    if len(shape) == 1:
+        out = torch.zeros(d, d, dtype=x.dtype, device=x.device)
+        out[i[0], i[1]] = x
+        out[i[1], i[0]] = x
+    elif len(shape) == 2:
+        out = torch.zeros(shape[0], d, d, dtype=x.dtype, device=x.device)
+        out[..., i[0], i[1]] = x
+        out[..., i[1], i[0]] = x
+    else:
+        raise ValueError(f"Input must be 2- or 3-d but has {len(shape)} dimension(s).")
+    return out
