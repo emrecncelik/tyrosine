@@ -28,7 +28,7 @@ EXPERIMENT_MODALITY = {
             },
         ),
         ModelConfig(
-            name="vit_large_patch16_224_in21k",  # 224x224, 16x16 patches
+            name="vit_large_patch16_224_in21k",  # 224x224, 16x16 patches, imagenet
             netset="Timm",
             modality=["vision"],
             extraction_layers={"vision": ["blocks." + str(i) for i in range(24)]},
