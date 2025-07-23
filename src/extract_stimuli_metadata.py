@@ -3,16 +3,16 @@ import glob
 import json
 import argparse
 import pandas as pd
-from net2brain.utils.download_datasets import DatasetNSD_872
-from .utils import filepath_to_nsd_id
+from net2brain.utils.download_datasets import DatasetAlgonauts_NSD
+from utils import filepath_to_nsd_id
 
 
 def main(args):
     DATA_DIR = args.data_dir
-    NSD_DIR = os.path.join(DATA_DIR, "NSD Dataset")
+    NSD_DIR = os.path.join(DATA_DIR, "Algonauts_NSD")
 
     print(f"Loading NSD dataset from {NSD_DIR}.")
-    nsd_dataset = DatasetNSD_872(DATA_DIR)
+    nsd_dataset = DatasetAlgonauts_NSD(DATA_DIR)
     paths = nsd_dataset.load_dataset(DATA_DIR)
 
     print("Processing COCO captions and instances.")
