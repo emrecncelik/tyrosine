@@ -17,9 +17,9 @@ def feature_postprocess(features: np.ndarray, op: str) -> np.ndarray:
     elif op == "eos":  # assuming EOS token is the last token
         features = features[-1, :]
         features = features[np.newaxis, :]
-    elif op == "flatten":
-        features = features.flatten()
-        features = features[np.newaxis, :]
+    # elif op == "flatten":
+    #     features = features.flatten()
+    #     features = features[np.newaxis, :]
     else:
         raise ValueError(
             f"Unsupported operation: {op}. Supported operations are: 'mean', 'cls', 'eos', 'flatten'."
