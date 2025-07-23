@@ -7,7 +7,8 @@ class ModelConfig:
     name: str
     netset: str
     modality: list[str]
-    extraction_layers: dict[str, list[str]]
+    extraction_layers: list[str]
+    pooling: Optional[str] = None
     save_dir: Optional[str] = None
 
     def __post_init__(self):
@@ -23,25 +24,32 @@ EXPERIMENT_MODALITY = {
         ModelConfig(
             name="bert-base-uncased",
             netset="Huggingface",
-            modality=["language"],
-            extraction_layers={
-                "language": ["encoder.layer." + str(i) for i in range(12)]
-            },
+            modality="language",
+            extraction_layers=["encoder.layer." + str(i) for i in range(12)],
+            pooling="cls",
         ),
         ModelConfig(
             name="vit_large_patch16_224_in21k",  # 224x224, 16x16 patches, imagenet
             netset="Timm",
-            modality=["vision"],
-            extraction_layers={"vision": ["blocks." + str(i) for i in range(24)]},
+            modality="vision",
+            extraction_layers=["blocks." + str(i) for i in range(24)],
+            pooling="cls",
         ),
         ModelConfig(
             name="ViT-L_-_14",
             netset="Clip",
-            modality=["vision", "language"],
-            extraction_layers={
-                "vision": ["visual.transformer.resblocks." + str(i) for i in range(24)],
-                "language": ["transformer.resblocks." + str(i) for i in range(12)],
-            },
+            modality="vision",
+            extraction_layers=[
+                "visual.transformer.resblocks." + str(i) for i in range(24)
+            ],
+            pooling="cls",
+        ),
+        ModelConfig(
+            name="ViT-L_-_14",
+            netset="Clip",
+            modality="language",
+            extraction_layers=["transformer.resblocks." + str(i) for i in range(12)],
+            pooling="eos",
         ),
     ],
     "feature_directory": "features_modality",

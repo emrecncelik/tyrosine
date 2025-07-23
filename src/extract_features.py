@@ -39,78 +39,77 @@ if __name__ == "__main__":
         logger.info(f"Modalities: {model.modality}")
         logger.info(f"Extraction layers: {model.extraction_layers}")
 
-        for modality in model.modality:
-            if modality == "vision":
-                data_path = image_paths
-            elif modality == "language":
-                data_path = text_paths
-            else:
-                raise ValueError(f"Unsupported modality: {modality}")
+        if model.modality == "vision":
+            data_path = image_paths
+        elif model.modality == "language":
+            data_path = text_paths
+        else:
+            raise ValueError(f"Unsupported modality: {model.modality}")
 
-            device = (
-                "cuda"
-                if torch.cuda.is_available() and "bert" not in model.name
-                else "cpu"
+        device = (
+            "cuda" if torch.cuda.is_available() and "bert" not in model.name else "cpu"
+        )
+        feature_extractor = FeatureExtractor(
+            model=model.name, netset=model.netset, device=device
+        )
+        feature_save_dir = os.path.join(
+            config["feature_directory"],
+            model.save_dir_for_modality(model.modality),
+        )
+
+        if not os.path.exists(feature_save_dir):
+            os.makedirs(feature_save_dir)
+            logger.info(f"Created directory: {feature_save_dir}")
+
+        elif os.listdir(feature_save_dir):
+            logger.warning(
+                f"Directory {feature_save_dir} already exists and is not empty. Skipping extraction."
             )
-            feature_extractor = FeatureExtractor(
-                model=model.name, netset=model.netset, device=device
+            continue
+
+        logger.info(f"Using device: {device}")
+        logger.info(f"Extracting features...")
+
+        feature_extractor.extract(
+            data_path=data_path,
+            save_path=feature_save_dir,
+            consolidate_per_layer=False,
+            layers_to_extract=model.extraction_layers,
+        )
+
+        process_and_update_features(feature_save_dir, op=model.pooling)
+        logger.info(f"Features saved and processed in: {feature_save_dir}")
+        del feature_extractor
+
+        rdm_creator = RDMCreator(device=device)
+        rdm_save_dir = os.path.join(
+            config["rdm_directory"],
+            model.save_dir_for_modality(model.modality),
+        )
+
+        if not os.path.exists(rdm_save_dir):
+            os.makedirs(rdm_save_dir)
+            logger.info(f"Created directory: {rdm_save_dir}")
+
+        elif os.listdir(rdm_save_dir):
+            logger.warning(
+                f"Directory {rdm_save_dir} already exists and is not empty. Skipping creation."
             )
-            feature_save_dir = os.path.join(
-                config["feature_directory"],
-                model.save_dir_for_modality(modality),
-            )
+            continue
 
-            if not os.path.exists(feature_save_dir):
-                os.makedirs(feature_save_dir)
-                logger.info(f"Created directory: {feature_save_dir}")
+        logger.info(f"Using device: {device}")
+        logger.info(f"Creating RDMs...")
 
-            elif os.listdir(feature_save_dir):
-                logger.warning(
-                    f"Directory {feature_save_dir} already exists and is not empty. Skipping extraction."
-                )
-                continue
+        rdm_creator.create_rdms(
+            feature_path=feature_save_dir,
+            save_path=rdm_save_dir,
+            save_format="npz",
+        )
 
-            logger.info(f"Using device: {device}")
-            logger.info(f"Extracting features...")
+        logger.info(f"RDMs saved in: {rdm_save_dir}")
 
-            feature_extractor.extract(
-                data_path=data_path,
-                save_path=feature_save_dir,
-                consolidate_per_layer=False,
-                layers_to_extract=model.extraction_layers[modality],
-            )
-
-            process_and_update_features(feature_save_dir, op="mean")
-            logger.info(f"Features saved and processed in: {feature_save_dir}")
-            del feature_extractor
-
-            rdm_creator = RDMCreator(device=device)
-            rdm_save_dir = os.path.join(
-                config["rdm_directory"],
-                model.save_dir_for_modality(modality),
-            )
-
-            if not os.path.exists(rdm_save_dir):
-                os.makedirs(rdm_save_dir)
-                logger.info(f"Created directory: {rdm_save_dir}")
-
-            elif os.listdir(rdm_save_dir):
-                logger.warning(
-                    f"Directory {rdm_save_dir} already exists and is not empty. Skipping creation."
-                )
-                continue
-
-            logger.info(f"Using device: {device}")
-            logger.info(f"Creating RDMs...")
-
-            rdm_creator.create_rdms(
-                feature_path=feature_save_dir,
-                save_path=rdm_save_dir,
-                save_format="npz",
-            )
-
-            logger.info(f"RDMs saved in: {rdm_save_dir}")
-            del rdm_creator
+        del rdm_creator
+        torch.cuda.empty_cache()
 
         logger.info(
             f"Finished extracting features and creating RDMs for model: {model.name}\n\n"
