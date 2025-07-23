@@ -36,7 +36,7 @@ EXPERIMENT_MODALITY = {
             modality=["vision", "language"],
             extraction_layers={
                 "vision": ["visual.transformer.resblocks." + str(i) for i in range(24)],
-                "language": ["transformer.resblocks.11" + str(i) for i in range(12)],
+                "language": ["transformer.resblocks." + str(i) for i in range(12)],
             },
         ),
     ],
