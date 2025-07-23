@@ -12,9 +12,9 @@ paths = nsd_dataset.load_dataset("/media/stuff")
 for model in EXPERIMENT_MODALITY["models"]:
     print(f"Extracting features for model: {model.name}")
     for modality in model.modality:
-        print(f"\tProcessing modality: {modality}")
-        print(f"\tUsing netset: {model.netset}")
-        print(f"\tExtraction layers: {model.extraction_layers[modality]}")
+        print(f"Processing modality: {modality}")
+        print(f"Using netset: {model.netset}")
+        print(f"Extraction layers: {model.extraction_layers[modality]}")
 
         device = (
             "cuda" if torch.cuda.is_available() and "bert" not in model.name else "cpu"
@@ -35,5 +35,5 @@ for model in EXPERIMENT_MODALITY["models"]:
 
         process_and_update_features(output_dir, op="mean")
         del extractor
-        print(f"\tFeatures saved and processed in: {output_dir}")
+        print(f"Features saved and processed in: {output_dir}")
     print(f"Finished extracting features for model: {model.name}\n\n")
