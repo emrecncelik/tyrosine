@@ -64,4 +64,4 @@ def process_and_update_features(feature_dir: str, op: str = "mean") -> None:
             features = data[k]
             processed_features = feature_postprocess(features, op=op)
             processed[k] = processed_features
-        np.savez(file, **processed)
+        np.savez(file, **processed)  # TODO: dont update all at once to save memory

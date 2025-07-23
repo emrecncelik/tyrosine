@@ -13,3 +13,16 @@ In this project, we will apply representational similarity analysis (RSA) betwee
 - Do multimodal vision-language models better explain brain responses than unimodal models during image presentation?
 
 - How does task specification (e.g. autoencoding, semantic segmentation, next-token prediction) influence brain-model alignment across cortical regions?
+
+**Setup**
+
+To get started, clone the repository and run the setup script:
+
+```bash
+git clone https://github.com/emrecncelik/tyrosine.git
+cd tyrosine
+./setup.sh
+```
+
+This will create a `conda` environment named `net2brain`, and install the required packages.
+
