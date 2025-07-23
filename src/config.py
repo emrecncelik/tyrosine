@@ -7,11 +7,14 @@ class ModelConfig:
     netset: str
     modality: list[str]
     extraction_layers: dict[str, str]
-    feature_directory: str = None
+    save_dir: str = None
 
     def __post_init__(self):
-        if self.feature_directory is None:
-            self.feature_directory = f"{self.name.replace('/', '_')}"
+        if self.save_dir is None:
+            self.save_dir = f"{self.name.replace('/', '_')}"
+
+    def save_dir_for_modality(self, modality: str) -> str:
+        return f"{self.save_dir}/{modality}"
 
 
 EXPERIMENT_MODALITY = {

@@ -24,7 +24,8 @@ for model in EXPERIMENT_MODALITY["models"]:
         data_modality = "captions" if modality == "language" else "images"
         data_path = paths[f"NSD_872_{data_modality}"]
         output_dir = os.path.join(
-            EXPERIMENT_MODALITY["feature_directory"], model.feature_directory, modality
+            EXPERIMENT_MODALITY["feature_directory"],
+            model.save_dir_for_modality(modality),
         )
         extractor.extract(
             data_path,
