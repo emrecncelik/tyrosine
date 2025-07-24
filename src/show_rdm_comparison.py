@@ -115,7 +115,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--plots_dir",
         type=str,
-        default="plots",
+        default="plots/rdm_comparison",
         help="Directory for saving plots",
     )
     parser.add_argument(
