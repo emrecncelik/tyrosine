@@ -1,6 +1,5 @@
 import os
 import torch
-import argparse
 from loguru import logger
 from net2brain.feature_extraction import FeatureExtractor
 from net2brain.rdm_creation import RDMCreator
@@ -8,7 +7,7 @@ from net2brain.utils.download_datasets import DatasetNSD_872
 from config import EXPERIMENT_MODALITY, EXPERIMENT_TASK
 from utils import process_and_update_features
 
-def extract_features_and_create_rdms(args):
+def main(args):
     config = EXPERIMENT_MODALITY if args.experiment == "modality" else EXPERIMENT_TASK
     dataset = DatasetNSD_872(path=args.data_dir)
     paths = dataset.load_dataset(path=args.data_dir)
@@ -96,7 +95,9 @@ def extract_features_and_create_rdms(args):
             f"Finished extracting features and creating RDMs for model: {model.name}\n\n"
         )
 
-def main():
+if __name__ == "__main__":
+    import argparse
+
     parser = argparse.ArgumentParser(
         description="Run feature extraction and RDM creation."
     )
@@ -115,8 +116,4 @@ def main():
     )
 
     args = parser.parse_args()
-    logger.info("Starting feature extraction and RDM creation...")
-    extract_features_and_create_rdms(args)
-
-if __name__ == "__main__":
-    main()
+    main(args)
