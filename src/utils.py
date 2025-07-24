@@ -1,9 +1,12 @@
+import os
 import glob
 import math
 import torch
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from config import FMRI_RDMS
+from net2brain.utils.download_datasets import DatasetNSD_872
 
 
 def feature_postprocess(features: np.ndarray, op: str) -> np.ndarray:
@@ -89,6 +92,24 @@ def filter_filepaths(paths: list[str], ids: list[int]) -> list[str]:
 def filter_common(paths: str, stimuli1000path: str = "./stimuli1000.csv"):
     ids = pd.read_csv(stimuli1000path)["nsd_id"].tolist()
     return filter_filepaths(paths=paths, ids=ids)
+
+
+def get_fmri_rdm(subject: str, sensitivity: str, area: str, nsd_dir: str = "./") -> str:
+    nsd_dataset = DatasetNSD_872(nsd_dir)
+    paths = nsd_dataset.load_dataset(nsd_dir)
+    path = os.path.join(
+        paths["NSD_872_RDMs"], FMRI_RDMS[sensitivity][area].format(subject)
+    )
+    return np.load(path, allow_pickle=True)["rdm"]
+
+
+def get_fmri_indices(
+    subject: str, sensitivity: str, area: str, indices_dir: str = "./clustered_indices"
+) -> np.ndarray:
+    path = os.path.join(
+        indices_dir, f"subject_{subject}_{sensitivity}_{area}_indices.npy"
+    )
+    return np.load(path, allow_pickle=True)
 
 
 def to_distance_matrix(x: torch.Tensor) -> torch.Tensor:
