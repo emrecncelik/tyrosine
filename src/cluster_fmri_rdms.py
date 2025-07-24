@@ -2,7 +2,6 @@ import os
 import numpy as np
 from loguru import logger
 import matplotlib.pyplot as plt
-import seaborn as sns
 from net2brain.utils.download_datasets import DatasetNSD_872
 from sklearn.cluster import AgglomerativeClustering
 from config import FMRI_RDMS
@@ -34,36 +33,19 @@ def main(args):
             fig, axes = plt.subplots(1, 2, figsize=(12, 6))
             fig.suptitle(f"Subject {subject} - {sensitivity} - {area}", fontsize=16)
 
-            vmin = rdm_fmri.min()
-            vmax = rdm_fmri.max()
-
-            sns.heatmap(
-                rdm_fmri,
-                ax=axes[0],
-                square=True,
-                xticklabels=False,
-                yticklabels=False,
-                cbar=False,
-                vmin=vmin,
-                vmax=vmax,
-            )
+            axes[0].imshow(rdm_fmri, cmap=args.cmap, aspect="auto")
             axes[0].set_title("Before Clustering")
+            axes[0].set_xticks([])
+            axes[0].set_yticks([])
 
-            sns.heatmap(
-                rdm_fmri_sorted,
-                ax=axes[1],
-                square=True,
-                xticklabels=False,
-                yticklabels=False,
-                cbar=True,
-                vmin=vmin,
-                vmax=vmax,
-            )
+            im = axes[1].imshow(rdm_fmri_sorted, cmap=args.cmap, aspect="auto")
             axes[1].set_title("After Clustering")
+            axes[1].set_xticks([])
+            axes[1].set_yticks([])
 
-            plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+            fig.colorbar(im, ax=axes[1])
+            plt.tight_layout()
 
-            # --- Saving ---
             plots_dir = args.plots_dir
             indices_dir = args.indices_dir
 
@@ -101,6 +83,12 @@ if __name__ == "__main__":
         type=str,
         default="clustered_indices",
         help="Directory for saving sorted indices",
+    )
+    parser.add_argument(
+        "--cmap",
+        type=str,
+        default="inferno",
+        help="Colormap for the RDM plots",
     )
     args = parser.parse_args()
 
