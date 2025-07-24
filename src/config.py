@@ -6,7 +6,7 @@ from typing import Optional
 class ModelConfig:
     name: str
     netset: str
-    modality: list[str]
+    modality: str
     extraction_layers: list[str]
     pooling: Optional[str] = None
     save_dir: Optional[str] = None
