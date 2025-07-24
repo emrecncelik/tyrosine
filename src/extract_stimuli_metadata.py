@@ -1,7 +1,6 @@
 import os
 import glob
 import json
-import argparse
 import pandas as pd
 from net2brain.utils.download_datasets import DatasetAlgonauts_NSD
 from utils import filepath_to_nsd_id
@@ -96,6 +95,8 @@ def main(args):
 
 
 if __name__ == "__main__":
+    import argparse
+
     parser = argparse.ArgumentParser(description="Process NSD and COCO datasets.")
     parser.add_argument(
         "--data_dir",
