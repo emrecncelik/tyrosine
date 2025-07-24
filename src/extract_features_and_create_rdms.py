@@ -8,26 +8,7 @@ from net2brain.utils.download_datasets import DatasetNSD_872
 from config import EXPERIMENT_MODALITY, EXPERIMENT_TASK
 from utils import process_and_update_features
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Run feature extraction and RDM creation."
-    )
-    parser.add_argument(
-        "--data_dir",
-        type=str,
-        default="./",
-        help="Parent directory containing the dataset directory (thanks Net2Brain). Default is current directory.",
-    )
-    parser.add_argument(
-        "--experiment",
-        type=str,
-        choices=["modality", "task"],
-        default="modality",
-        help="Choose the experiment type: 'modality' or 'task'. Default is 'modality'.",
-    )
-
-    args = parser.parse_args()
-
+def extract_features_and_create_rdms(args):
     config = EXPERIMENT_MODALITY if args.experiment == "modality" else EXPERIMENT_TASK
     dataset = DatasetNSD_872(path=args.data_dir)
     paths = dataset.load_dataset(path=args.data_dir)
@@ -114,3 +95,28 @@ if __name__ == "__main__":
         logger.info(
             f"Finished extracting features and creating RDMs for model: {model.name}\n\n"
         )
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Run feature extraction and RDM creation."
+    )
+    parser.add_argument(
+        "--data_dir",
+        type=str,
+        default="./",
+        help="Parent directory containing the dataset directory (thanks Net2Brain). Default is current directory.",
+    )
+    parser.add_argument(
+        "--experiment",
+        type=str,
+        choices=["modality", "task"],
+        default="modality",
+        help="Choose the experiment type: 'modality' or 'task'. Default is 'modality'.",
+    )
+
+    args = parser.parse_args()
+    logger.info("Starting feature extraction and RDM creation...")
+    extract_features_and_create_rdms(args)
+
+if __name__ == "__main__":
+    main()
