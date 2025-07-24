@@ -89,9 +89,10 @@ def main(args):
             pd.DataFrame(zip(ids, order), columns=["nsd_id", f"subj0{i}_order"])
         )
 
-    stimuli1000.to_csv(
-        os.path.join(args.output_dir, "stimuli872_ordered.csv"), index=False
-    )
+    for ordered in stimuli_orders_by_nsd_id_all_subjects:
+        stimuli1000 = pd.merge(stimuli1000, ordered, on="nsd_id", how="left")
+    stimuli1000 = stimuli1000.sort_values(by="nsd_id").reset_index(drop=True)
+    stimuli1000.to_csv("stimuli872_ordered.csv", index=False)
 
 
 if __name__ == "__main__":
