@@ -63,6 +63,12 @@ Finally, running `python src/plot_comparison.py` will give you he following plot
 
 ![similarity](./plots/similarity_plot.png)
 
+**Observations**
+
+- Low correlation across models.
+- Vision model representations better correlate with representations across the visual cortex than language models 😲🤯.
+- Contrastive learning and multimodal training (image and text data) provides more similar representations for **both text and image**.
+
 ### References
 ```
 @article{doerig2022visual,
