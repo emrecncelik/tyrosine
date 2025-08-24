@@ -25,30 +25,28 @@ EXPERIMENT_MODALITY = {
             name="bert-base-uncased",
             netset="Huggingface",
             modality="language",
-            extraction_layers=["encoder.layer." + str(i) for i in range(12)],
+            extraction_layers=["encoder.layer.11"],
             pooling="cls",
         ),
         ModelConfig(
             name="vit_large_patch16_224_in21k",  # 224x224, 16x16 patches, imagenet
             netset="Timm",
             modality="vision",
-            extraction_layers=["blocks." + str(i) for i in range(24)],
+            extraction_layers=["blocks.23"],
             pooling="cls",
         ),
         ModelConfig(
             name="ViT-L_-_14",
             netset="Clip",
             modality="vision",
-            extraction_layers=[
-                "visual.transformer.resblocks." + str(i) for i in range(24)
-            ],
+            extraction_layers=["visual.transformer.resblocks.23"],
             pooling="cls",
         ),
         ModelConfig(
             name="ViT-L_-_14",
             netset="Clip",
             modality="language",
-            extraction_layers=["transformer.resblocks." + str(i) for i in range(12)],
+            extraction_layers=["transformer.resblocks.11"],
             pooling="eos",
         ),
     ],

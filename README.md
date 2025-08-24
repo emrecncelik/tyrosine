@@ -14,7 +14,7 @@ In this project, we will apply representational similarity analysis (RSA) betwee
 
 - How does task specification (e.g. autoencoding, semantic segmentation, next-token prediction) influence brain-model alignment across cortical regions?
 
-**Setup**
+## Setup
 
 To get started, clone the repository and run the setup script:
 
@@ -26,3 +26,39 @@ cd tyrosine
 
 This will create a `conda` environment named `net2brain`, and install the required packages.
 
+## Usage
+
+### Feature extraction
+First, you will need to download the dataset and extract the features from the models, to do that you'll only need to run the following command,
+```bash
+conda activate net2brain
+python src/extract_features.py
+```
+This will extract the final layer features from ViT (visual), BERT (textual), and CLIP (textual and visual) and save them under the folder `features_modality`. 
+
+### RDM Clustering and Ordering by Clusters
+After extracting the features, we'll need to cluster the fMRI RDMs based on the dissimilarities in the matrix itself in order to see common patterns across model and human representations. The following should do the trick,
+```bash
+python src/cluster_fmri_rdms.py --subject 1
+```
+We use RDMs from subject 1 by default, but you can apply clustering on any subject (1 to 8). Alongside the clustering this will create RDM heatmaps before and after cluster ordering such as,
+
+![rdm_clustering](./plots/fmri_rdm_clustering/subject_1_bodies_EBA.png)
+
+Following the clustering, we can now plot the RDMs of the various models and fMRI RDMs side by side to see the similarities. An example output is given below where you can see loosely similar dissimilarity matrices,
+
+```bash
+python src/show_rdm_comparison.py
+```
+
+![matrix_comparison](./plots/subject_1_bodies_EBA_model_comparison.png)
+
+In order to quantitatively measure the similarities between RDMs you can run the snippet below, this will output a file called `similarities.csv`. 
+
+```bash
+python src/compare_rdms.py
+```
+
+Finally, running `python src/plot_comparison.py` will give you he following plot showing the mean and the standard error bars for each region of interest, modality, and model.
+
+![similarity](./plots/similarity_plot.png)

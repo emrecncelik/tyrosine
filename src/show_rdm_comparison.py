@@ -88,7 +88,7 @@ def main(args):
                 args.plots_dir,
                 f"subject_{args.subject}_{sensitivity}_{area}_model_comparison.png",
             )
-            plt.savefig(save_path)
+            plt.savefig(save_path, bbox_inches="tight")
             plt.close(fig)
             logger.info(f"Saved plot to {save_path}")
 

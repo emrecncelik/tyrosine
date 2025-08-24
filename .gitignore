@@ -3,7 +3,6 @@
 *.csv
 *.npz
 *.txt
-*.png
 *.npy
 old
 __pycache__/
