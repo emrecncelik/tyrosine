@@ -62,3 +62,36 @@ python src/compare_rdms.py
 Finally, running `python src/plot_comparison.py` will give you he following plot showing the mean and the standard error bars for each region of interest, modality, and model.
 
 ![similarity](./plots/similarity_plot.png)
+
+### References
+```
+@article{doerig2022visual,
+  title={Visual representations in the human brain are aligned with large language models},
+  author={Doerig, Adrien and Kietzmann, Tim C and Allen, Emily and Wu, Yihan and Naselaris, Thomas and Kay, Kendrick and Charest, Ian},
+  journal={arXiv preprint arXiv:2209.11737},
+  year={2022}
+}
+
+@article{allen2022massive,
+  title={A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence},
+  author={Allen, Emily J and St-Yves, Ghislain and Wu, Yihan and Breedlove, Jesse L and Prince, Jacob S and Dowdle, Logan T and Nau, Matthias and Caron, Brad and Pestilli, Franco and Charest, Ian and others},
+  journal={Nature neuroscience},
+  volume={25},
+  number={1},
+  pages={116--126},
+  year={2022},
+  publisher={Nature Publishing Group US New York}
+}
+
+
+@article{bersch2025net2brain,
+  title={Net2Brain: A Toolbox to compare artificial vision models with human brain responses},
+  author={Bersch, Domenic and Vilas, Martina G and Saba-Sadiya, Sari and Schauml{\"o}ffel, Timothy and Dwivedi, Kshitij and Sartzetaki, Christina and Cichy, Radoslaw M and Roig, Gemma},
+  journal={Frontiers in Neuroinformatics},
+  volume={19},
+  pages={1515873},
+  year={2025},
+  publisher={Frontiers Media SA}
+}
+```
+
